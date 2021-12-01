@@ -40,7 +40,7 @@ interface ToDoDao {
             "WHEN priority = 'MEDIUM' then 2 " +
             "WHEN priority = 'LOW' then 3 END"
     )
-    fun getAllByHignPriority(): Flow<List<ToDoTask>>
+    fun getAllByHighPriority(): Flow<List<ToDoTask>>
 
 
 
