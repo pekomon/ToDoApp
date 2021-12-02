@@ -25,7 +25,7 @@ object DbModule {
         context,
         TodoDataBase::class.java,
         DATABASE_NAME
-    )
+    ).build()
 
     @Singleton
     @Provides
