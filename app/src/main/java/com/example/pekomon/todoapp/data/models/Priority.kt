@@ -6,7 +6,7 @@ import com.example.pekomon.todoapp.ui.theme.LowPriority
 import com.example.pekomon.todoapp.ui.theme.MediumPriority
 import com.example.pekomon.todoapp.ui.theme.NoPriority
 
-enum class Priority(color: Color) {
+enum class Priority(val color: Color) {
     HIGH(HighPriority),
     MEDIUM(MediumPriority),
     LOW(LowPriority),
