@@ -4,6 +4,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.pekomon.todoapp.ui.views.todolist.TodoListView
 import com.example.pekomon.todoapp.util.Consts.LIST_ARGUMENT_KEY
 import com.example.pekomon.todoapp.util.Consts.LIST_SCREEN
 
@@ -16,5 +17,8 @@ fun NavGraphBuilder.listComposable(
             type = NavType.StringType
         })
     ) {
+        TodoListView(
+            navigateToTaskScreen
+        )
     }
 }
