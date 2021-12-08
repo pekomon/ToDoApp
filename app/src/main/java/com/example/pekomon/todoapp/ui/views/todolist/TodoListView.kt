@@ -7,7 +7,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.pekomon.todoapp.R
 
 @Composable
 fun TodoListView(
@@ -31,7 +33,7 @@ fun ListFab(
     ) {
         Icon(
             imageVector = Icons.Filled.Add,
-            contentDescription = "Add new task",
+            contentDescription = stringResource(id = R.string.fab_add_new_task_content_description),
             tint = Color.White
         )
     }
