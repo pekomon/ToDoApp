@@ -16,6 +16,7 @@ fun TodoListView(
     onClick: ((Int) -> Unit)
 ) {
     Scaffold(
+        topBar = { TodoListAppBar() },
         floatingActionButton = {
             ListFab(onClick = onClick)
         }
