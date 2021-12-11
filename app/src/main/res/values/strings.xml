@@ -6,5 +6,8 @@
     <string name="appbar_sort_action_content_description">Sort tasks</string>
     <string name="appbar_delete_all_action_content_description">Delete all</string>
     <string name="appbar_menu_item_delete_all">Delete all</string>
+    <string name="appbar_search_hint">Search</string>
+    <string name="appbar_search_mode_search_icon_content_description">Search</string>
+    <string name="appbar_search_mode_close_icon_content_description">Search</string>
 
 </resources>

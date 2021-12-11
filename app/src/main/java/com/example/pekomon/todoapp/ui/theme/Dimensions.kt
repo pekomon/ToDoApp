@@ -7,3 +7,6 @@ val PADDING_MEDIUM = 8.dp
 val PADDING_LARGE = 12.dp
 
 val PRIORITY_INDICATOR_SIZE = 16.dp
+
+// From material
+val TOP_APP_BAR_HEIGHT = 56.dp
