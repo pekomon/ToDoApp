@@ -8,7 +8,7 @@ import com.example.pekomon.todoapp.ui.theme.Purple700
 import com.example.pekomon.todoapp.ui.theme.Teal200
 import com.example.pekomon.todoapp.ui.theme.lightGray
 
-val Colors.topAppBarColor: Color
+val Colors.topAppBarContentColor: Color
     @Composable
     get() = if (isLight) Color.White else lightGray
 

@@ -2,4 +2,9 @@
     <string name="app_name">ToDo App</string>
     <string name="fab_add_new_task_content_description">Add new task</string>
     <string name="appbar_title_tasks">Tasks</string>
+    <string name="appbar_search_action_content_description">Search tasks</string>
+    <string name="appbar_sort_action_content_description">Sort tasks</string>
+    <string name="appbar_delete_all_action_content_description">Delete all</string>
+    <string name="appbar_menu_item_delete_all">Delete all</string>
+
 </resources>
