@@ -15,7 +15,7 @@ import com.example.pekomon.todoapp.extensions.fabBackgroundColor
 
 @Composable
 fun TodoListView(
-    onClick: ((Int) -> Unit)
+    onClick: ((taskId: Int) -> Unit)
 ) {
     Scaffold(
         topBar = { TodoListAppBar() },
@@ -29,7 +29,7 @@ fun TodoListView(
 
 @Composable
 fun ListFab(
-    onClick: ((Int) -> Unit)
+    onClick: ((taskId: Int) -> Unit)
 ) {
     FloatingActionButton(
         onClick = { onClick(-1) },
