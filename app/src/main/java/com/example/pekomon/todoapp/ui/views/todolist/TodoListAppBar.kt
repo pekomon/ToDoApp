@@ -30,22 +30,41 @@ import com.example.pekomon.todoapp.extensions.topAppBarContentColor
 import com.example.pekomon.todoapp.ui.theme.PADDING_LARGE
 import com.example.pekomon.todoapp.ui.theme.TOP_APP_BAR_HEIGHT
 import com.example.pekomon.todoapp.ui.theme.Typography
+import com.example.pekomon.todoapp.ui.viewmodel.TodoViewModel
+import com.example.pekomon.todoapp.util.SearchAppBarState
+import com.example.pekomon.todoapp.util.TrailingIconState
 
 @Composable
-fun TodoListAppBar() {
-    /*
-    DefaultTodoListAppBar(
-        onSearchClicked = {},
-        onSortClicked = {},
-        onDeleteAllClicked = {}
-    )
-    */
-    SearchTodoListAppBar(
-        text = "",
-        onTextChanged = {},
-        onCloseClicked = {},
-        onSearchClicked = {}
-    )
+fun TodoListAppBar(
+    todoViewModel: TodoViewModel,
+    searchAppBarState: SearchAppBarState,
+    searchTextState: String
+) {
+
+    when (searchAppBarState) {
+        SearchAppBarState.CLOSED -> {
+            DefaultTodoListAppBar(
+                onSearchClicked = {
+                    todoViewModel.openSearchAppBar()
+                },
+                onSortClicked = {},
+                onDeleteAllClicked = {}
+            )
+        }
+        else -> {
+            SearchTodoListAppBar(
+                text = searchTextState,
+                onTextChanged = { newText ->
+                    todoViewModel.searchTextChanged(newText = newText)
+                },
+                onCloseClicked = {
+                    todoViewModel.closeSearchAppBar()
+                    todoViewModel.searchTextChanged()
+                },
+                onSearchClicked = {}
+            )
+        }
+    }
 }
 
 @Composable
@@ -191,6 +210,12 @@ fun SearchTodoListAppBar(
     onCloseClicked: (() -> Unit),
     onSearchClicked: (String) -> Unit
 ) {
+
+    // TODO: Maybe handle this with boolean
+    var trailingIconState by remember {
+        mutableStateOf(TrailingIconState.READY_TO_DELETE)
+    }
+
     Surface(
         modifier = Modifier
             .fillMaxWidth()
@@ -233,7 +258,22 @@ fun SearchTodoListAppBar(
             trailingIcon = {
                 IconButton(
                     onClick = {
-                        onCloseClicked()
+                        when (trailingIconState) {
+                            TrailingIconState.READY_TO_DELETE -> {
+                                onTextChanged("")
+                                trailingIconState = TrailingIconState.READY_TO_CLOSE
+                            }
+                            TrailingIconState.READY_TO_CLOSE -> {
+                                if (text.isNotEmpty()) {
+                                    onTextChanged("")
+                                } else {
+                                    onCloseClicked()
+                                    trailingIconState = TrailingIconState.READY_TO_DELETE
+                                }
+
+                            }
+                        }
+                        //onCloseClicked()
                     }
                 ) {
                     Icon(

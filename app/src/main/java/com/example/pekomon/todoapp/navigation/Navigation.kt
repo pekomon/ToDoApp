@@ -9,11 +9,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.example.pekomon.todoapp.navigation.destinations.listComposable
 import com.example.pekomon.todoapp.navigation.destinations.taskComposable
+import com.example.pekomon.todoapp.ui.viewmodel.TodoViewModel
 import com.example.pekomon.todoapp.util.Consts.LIST_SCREEN
 
 @Composable
 fun SetupNavigation(
-    navHostController: NavHostController
+    navHostController: NavHostController,
+    todoViewModel: TodoViewModel
 ) {
     val screen = remember(navHostController) {
         Screens(navHostController = navHostController)
@@ -24,7 +26,8 @@ fun SetupNavigation(
         startDestination = LIST_SCREEN
     ) {
         listComposable(
-            navigateToTaskScreen = screen.task
+            navigateToTaskScreen = screen.task,
+            todoViewModel = todoViewModel
         )
         taskComposable(
             navigateToListScreen = screen.list

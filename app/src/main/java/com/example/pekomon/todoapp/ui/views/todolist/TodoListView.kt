@@ -7,18 +7,32 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.pekomon.todoapp.R
 import com.example.pekomon.todoapp.extensions.fabBackgroundColor
+import com.example.pekomon.todoapp.ui.viewmodel.TodoViewModel
+import com.example.pekomon.todoapp.util.SearchAppBarState
 
 @Composable
 fun TodoListView(
-    onClick: ((taskId: Int) -> Unit)
+    onClick: ((taskId: Int) -> Unit),
+    todoViewModel: TodoViewModel
 ) {
+
+    val searchAppBarState: SearchAppBarState by todoViewModel.searchAppBarState
+    val searchTextState: String by todoViewModel.searchTextState
+
     Scaffold(
-        topBar = { TodoListAppBar() },
+        topBar = {
+            TodoListAppBar(
+                todoViewModel = todoViewModel,
+                searchAppBarState = searchAppBarState,
+                searchTextState = searchTextState
+            )
+                 },
         floatingActionButton = {
             ListFab(onClick = onClick)
         }
@@ -41,10 +55,4 @@ fun ListFab(
             tint = Color.White
         )
     }
-}
-
-@Composable
-@Preview
-fun PreviewTodoListView() {
-    TodoListView(onClick = {})
 }
