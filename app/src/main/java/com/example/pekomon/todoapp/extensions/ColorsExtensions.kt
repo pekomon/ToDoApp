@@ -3,10 +3,7 @@ package com.example.pekomon.todoapp.extensions
 import androidx.compose.material.Colors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-import com.example.pekomon.todoapp.ui.theme.Purple500
-import com.example.pekomon.todoapp.ui.theme.Purple700
-import com.example.pekomon.todoapp.ui.theme.Teal200
-import com.example.pekomon.todoapp.ui.theme.lightGray
+import com.example.pekomon.todoapp.ui.theme.*
 
 val Colors.topAppBarContentColor: Color
     @Composable
@@ -19,3 +16,11 @@ val Colors.topAppBarBackgroundColor: Color
 val Colors.fabBackgroundColor: Color
     @Composable
     get() = if (isLight) Teal200 else Purple700
+
+val Colors.taskListItemBackGroundColor: Color
+    @Composable
+    get() = if (isLight) Color.White else darkGray
+
+val Colors.taskListItemTextColor: Color
+    @Composable
+    get() = if (isLight) darkGray else lightGray

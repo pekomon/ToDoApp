@@ -26,6 +26,9 @@ fun TodoListView(
     val searchTextState: String by todoViewModel.searchTextState
 
     Scaffold(
+        content = {
+            TodoListContent()
+        },
         topBar = {
             TodoListAppBar(
                 todoViewModel = todoViewModel,
@@ -36,9 +39,7 @@ fun TodoListView(
         floatingActionButton = {
             ListFab(onClick = onClick)
         }
-    ) {
-
-    }
+    )
 }
 
 @Composable

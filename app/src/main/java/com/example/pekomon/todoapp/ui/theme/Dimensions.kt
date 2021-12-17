@@ -10,3 +10,5 @@ val PRIORITY_INDICATOR_SIZE = 16.dp
 
 // From material
 val TOP_APP_BAR_HEIGHT = 56.dp
+
+val LIST_ITEM_ELEVATION = 2.dp
