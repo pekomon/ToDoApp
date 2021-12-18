@@ -1,33 +1,39 @@
 package com.example.pekomon.todoapp.ui.views.todolist
 
-import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import com.example.pekomon.todoapp.R
 import com.example.pekomon.todoapp.extensions.fabBackgroundColor
 import com.example.pekomon.todoapp.ui.viewmodel.TodoViewModel
 import com.example.pekomon.todoapp.util.SearchAppBarState
 
+@ExperimentalMaterialApi
 @Composable
 fun TodoListView(
-    onClick: ((taskId: Int) -> Unit),
+    onlistItemClicked: ((taskId: Int) -> Unit),
     todoViewModel: TodoViewModel
 ) {
+    LaunchedEffect(key1 = true) {
+        todoViewModel.updateAllTAsks()
+    }
 
+    val allTasks by todoViewModel.allTasks.collectAsState()
     val searchAppBarState: SearchAppBarState by todoViewModel.searchAppBarState
     val searchTextState: String by todoViewModel.searchTextState
 
     Scaffold(
         content = {
-            TodoListContent()
+            TodoListContent(
+                tasks = allTasks,
+                onItemClicked = onlistItemClicked
+            )
         },
         topBar = {
             TodoListAppBar(
@@ -37,7 +43,7 @@ fun TodoListView(
             )
                  },
         floatingActionButton = {
-            ListFab(onClick = onClick)
+            ListFab(onClick = onlistItemClicked)
         }
     )
 }

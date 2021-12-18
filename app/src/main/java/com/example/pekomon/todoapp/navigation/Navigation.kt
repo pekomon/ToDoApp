@@ -1,5 +1,6 @@
 package com.example.pekomon.todoapp.navigation
 
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
@@ -12,6 +13,7 @@ import com.example.pekomon.todoapp.navigation.destinations.taskComposable
 import com.example.pekomon.todoapp.ui.viewmodel.TodoViewModel
 import com.example.pekomon.todoapp.util.Consts.LIST_SCREEN
 
+@ExperimentalMaterialApi
 @Composable
 fun SetupNavigation(
     navHostController: NavHostController,
