@@ -29,18 +29,23 @@ fun TodoListContent(
     tasks: List<ToDoTask>,
     onItemClicked: ((taskId: Int) -> Unit)
 ) {
-    LazyColumn {
-        items(
-            items = tasks,
-            key = { task ->
-                task.id
+    if (tasks.isNotEmpty()) {
+        LazyColumn {
+            items(
+                items = tasks,
+                key = { task ->
+                    task.id
+                }
+            ) { task ->
+                TodoListItem(
+                    toDoTask = task,
+                    onClicked = onItemClicked
+                )
             }
-        ) { task ->
-            TodoListItem(
-                toDoTask = task,
-                onClicked = onItemClicked
-            )
         }
+    }
+    else {
+        EmptyListContent()
     }
 }
 

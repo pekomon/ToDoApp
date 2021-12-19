@@ -17,7 +17,7 @@ import com.example.pekomon.todoapp.util.SearchAppBarState
 @ExperimentalMaterialApi
 @Composable
 fun TodoListView(
-    onlistItemClicked: ((taskId: Int) -> Unit),
+    onListItemClicked: ((taskId: Int) -> Unit),
     todoViewModel: TodoViewModel
 ) {
     LaunchedEffect(key1 = true) {
@@ -32,7 +32,7 @@ fun TodoListView(
         content = {
             TodoListContent(
                 tasks = allTasks,
-                onItemClicked = onlistItemClicked
+                onItemClicked = onListItemClicked
             )
         },
         topBar = {
@@ -43,7 +43,7 @@ fun TodoListView(
             )
                  },
         floatingActionButton = {
-            ListFab(onClick = onlistItemClicked)
+            ListFab(onClick = onListItemClicked)
         }
     )
 }

@@ -22,7 +22,7 @@ fun NavGraphBuilder.listComposable(
         })
     ) {
         TodoListView(
-            onlistItemClicked =  navigateToTaskScreen,
+            onListItemClicked =  navigateToTaskScreen,
             todoViewModel = todoViewModel
         )
     }
