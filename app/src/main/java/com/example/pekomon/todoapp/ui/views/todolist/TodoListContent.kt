@@ -30,22 +30,34 @@ fun TodoListContent(
     onItemClicked: ((taskId: Int) -> Unit)
 ) {
     if (tasks.isNotEmpty()) {
-        LazyColumn {
-            items(
-                items = tasks,
-                key = { task ->
-                    task.id
-                }
-            ) { task ->
-                TodoListItem(
-                    toDoTask = task,
-                    onClicked = onItemClicked
-                )
-            }
-        }
+        DisplayTasks(
+            tasks = tasks,
+            onItemClicked = onItemClicked
+        )
     }
     else {
         EmptyListContent()
+    }
+}
+
+@ExperimentalMaterialApi
+@Composable
+fun DisplayTasks(
+    tasks: List<ToDoTask>,
+    onItemClicked: ((taskId: Int) -> Unit)
+) {
+    LazyColumn {
+        items(
+            items = tasks,
+            key = { task ->
+                task.id
+            }
+        ) { task ->
+            TodoListItem(
+                toDoTask = task,
+                onClicked = onItemClicked
+            )
+        }
     }
 }
 
