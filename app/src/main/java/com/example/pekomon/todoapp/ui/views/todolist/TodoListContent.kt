@@ -22,22 +22,26 @@ import com.example.pekomon.todoapp.extensions.taskListItemTextColor
 import com.example.pekomon.todoapp.ui.theme.LIST_ITEM_ELEVATION
 import com.example.pekomon.todoapp.ui.theme.PADDING_LARGE
 import com.example.pekomon.todoapp.ui.theme.PRIORITY_INDICATOR_SIZE
+import com.example.pekomon.todoapp.util.Result
 
 @ExperimentalMaterialApi
 @Composable
 fun TodoListContent(
-    tasks: List<ToDoTask>,
+    tasks: Result<List<ToDoTask>>,
     onItemClicked: ((taskId: Int) -> Unit)
 ) {
-    if (tasks.isNotEmpty()) {
-        DisplayTasks(
-            tasks = tasks,
-            onItemClicked = onItemClicked
-        )
+    if (tasks is Result.Success) {
+        if (tasks.data.isNotEmpty()) {
+            DisplayTasks(
+                tasks = tasks.data,
+                onItemClicked = onItemClicked
+            )
+        }
+        else {
+            EmptyListContent()
+        }
     }
-    else {
-        EmptyListContent()
-    }
+    // TODO: Handle other Results too
 }
 
 @ExperimentalMaterialApi

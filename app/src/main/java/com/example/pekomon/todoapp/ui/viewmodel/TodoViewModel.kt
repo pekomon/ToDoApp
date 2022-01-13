@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.pekomon.todoapp.data.models.ToDoTask
 import com.example.pekomon.todoapp.data.repository.ToDoRepository
 import com.example.pekomon.todoapp.util.SearchAppBarState
+import com.example.pekomon.todoapp.util.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -28,15 +29,19 @@ class TodoViewModel @Inject constructor(
     private val _searchTextState: MutableState<String> = mutableStateOf("")
     val searchTextState: State<String> = _searchTextState
 
-
-    private val _allTasks = MutableStateFlow<List<ToDoTask>>(emptyList())
-    val allTasks: StateFlow<List<ToDoTask>> = _allTasks
+    private val _allTasks = MutableStateFlow<Result<List<ToDoTask>>>(Result.Idle)
+    val allTasks: StateFlow<Result<List<ToDoTask>>> = _allTasks
 
     fun updateAllTAsks() {
-        viewModelScope.launch {
-            repository.getAllTasks.collect {
-                _allTasks.value = it
+        _allTasks.value = Result.Loading
+        try {
+            viewModelScope.launch {
+                repository.getAllTasks.collect {
+                    _allTasks.value = Result.Success(it)
+                }
             }
+        } catch (t: Throwable) {
+            _allTasks.value = Result.Error(t)
         }
     }
 
