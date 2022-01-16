@@ -11,5 +11,7 @@
     <string name="appbar_search_mode_close_icon_content_description">Search</string>
     <string name="empty_list_sad_face_content_description">Sad face icon</string>
     <string name="empty_list_description">No todo tasks found</string>
+    <string name="appbar_back_arrow">Back Arrow</string>
+    <string name="appbar_back_add_task">Add Task</string>
 
 </resources>

@@ -6,6 +6,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.pekomon.todoapp.util.Action
 import com.example.pekomon.todoapp.util.Consts
+import com.example.pekomon.todoapp.util.Consts.TASK_ARGUMENT_KEY
+import com.example.pekomon.todoapp.util.Consts.TASK_ID_ADD_NEW
 
 fun NavGraphBuilder.taskComposable(
     navigateToListScreen: ((Action) -> Unit)
@@ -15,6 +17,7 @@ fun NavGraphBuilder.taskComposable(
         arguments = listOf(navArgument(Consts.TASK_ARGUMENT_KEY) {
             type = NavType.IntType
         })
-    ) {
+    ) { navBackStackEntry ->
+        val taskId = navBackStackEntry.arguments?.getInt(TASK_ARGUMENT_KEY) ?: TASK_ID_ADD_NEW
     }
 }

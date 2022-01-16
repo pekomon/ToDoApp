@@ -12,6 +12,7 @@ import androidx.compose.ui.res.stringResource
 import com.example.pekomon.todoapp.R
 import com.example.pekomon.todoapp.extensions.fabBackgroundColor
 import com.example.pekomon.todoapp.ui.viewmodel.TodoViewModel
+import com.example.pekomon.todoapp.util.Consts.TASK_ID_ADD_NEW
 import com.example.pekomon.todoapp.util.SearchAppBarState
 
 @ExperimentalMaterialApi
@@ -53,7 +54,7 @@ fun ListFab(
     onClick: ((taskId: Int) -> Unit)
 ) {
     FloatingActionButton(
-        onClick = { onClick(-1) },
+        onClick = { onClick(TASK_ID_ADD_NEW) },
         backgroundColor = MaterialTheme.colors.fabBackgroundColor
     ) {
         Icon(

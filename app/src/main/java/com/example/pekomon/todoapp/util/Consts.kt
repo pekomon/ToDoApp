@@ -9,4 +9,6 @@ object Consts {
 
     const val LIST_ARGUMENT_KEY = "action"
     const val TASK_ARGUMENT_KEY = "taskId"
+
+    const val TASK_ID_ADD_NEW = -1
 }
