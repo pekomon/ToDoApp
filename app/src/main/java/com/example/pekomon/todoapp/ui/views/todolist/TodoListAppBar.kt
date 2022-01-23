@@ -278,7 +278,7 @@ fun SearchTodoListAppBar(
                 ) {
                     Icon(
                         imageVector = Icons.Filled.Close,
-                        contentDescription = stringResource(id = R.string.appbar_search_mode_close_icon_content_description),
+                        contentDescription = stringResource(id = R.string.close_icon_content_description),
                         tint = MaterialTheme.colors.topAppBarContentColor
                     )
                 }
