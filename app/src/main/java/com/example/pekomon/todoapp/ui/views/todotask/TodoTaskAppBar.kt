@@ -25,7 +25,7 @@ fun NewTodoTaskAppBar(
 ) {
     TopAppBar(
         navigationIcon = {
-          BackAction(onBackClicked = {} )
+          BackAction(onBackClicked = navigateToListScreen )
         },
         title = {
             Text(
