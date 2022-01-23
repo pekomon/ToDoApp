@@ -19,9 +19,18 @@ import com.example.pekomon.todoapp.util.Action
 
 @Composable
 fun TodoTaskAppBar(
+    task: ToDoTask?,
     navigateToListScreen: ((Action) -> Unit)
 ) {
-    NewTodoTaskAppBar(navigateToListScreen = navigateToListScreen)
+    if (task == null) {
+        NewTodoTaskAppBar(navigateToListScreen = navigateToListScreen)
+    } else {
+        ExistingTodoTaskAppBar(
+            task = task,
+            navigateToListScreen = navigateToListScreen
+        )
+    }
+
 }
 
 @Composable

@@ -32,6 +32,9 @@ class TodoViewModel @Inject constructor(
     private val _allTasks = MutableStateFlow<Result<List<ToDoTask>>>(Result.Idle)
     val allTasks: StateFlow<Result<List<ToDoTask>>> = _allTasks
 
+    private val _selectedTask: MutableStateFlow<ToDoTask?> = MutableStateFlow(null)
+    val selectedTask: StateFlow<ToDoTask?> = _selectedTask
+
     fun updateAllTAsks() {
         _allTasks.value = Result.Loading
         try {
@@ -42,6 +45,14 @@ class TodoViewModel @Inject constructor(
             }
         } catch (t: Throwable) {
             _allTasks.value = Result.Error(t)
+        }
+    }
+
+    fun getTask(taskId: Int) {
+        viewModelScope.launch {
+            repository.getTask(taskId).collect { task ->
+                _selectedTask.value = task
+            }
         }
     }
 

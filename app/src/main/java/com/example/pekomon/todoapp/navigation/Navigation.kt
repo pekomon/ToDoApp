@@ -32,7 +32,8 @@ fun SetupNavigation(
             todoViewModel = todoViewModel
         )
         taskComposable(
-            navigateToListScreen = screen.list
+            navigateToListScreen = screen.list,
+            todoViewModel = todoViewModel
         )
     }
 }
