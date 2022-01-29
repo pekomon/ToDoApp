@@ -16,4 +16,6 @@
     <string name="appbar_back_arrow">Back Arrow</string>
     <string name="appbar_back_add_task">Add Task</string>
     <string name="dropdown_icon_content_description">Drop down arrow</string>
+    <string name="title_label">Title</string>
+    <string name="description_label">Description</string>
 </resources>
