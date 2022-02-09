@@ -1,7 +1,9 @@
 package com.example.pekomon.todoapp.navigation.destinations
 
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
@@ -26,9 +28,14 @@ fun NavGraphBuilder.taskComposable(
         val taskId = navBackStackEntry.arguments?.getInt(TASK_ARGUMENT_KEY) ?: TASK_ID_ADD_NEW
         todoViewModel.getTask(taskId = taskId)
         val selectedTask by todoViewModel.selectedTask.collectAsState()
-        
+
+        LaunchedEffect(key1 = taskId) {
+            todoViewModel.updateUI(task = selectedTask)
+        }
+
         TodoTaskView(
             task = selectedTask,
+            viewModel = todoViewModel,
             navigateToListScreen = navigateToListScreen
         )
     }

@@ -5,6 +5,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.pekomon.todoapp.data.models.Priority
 import com.example.pekomon.todoapp.data.models.ToDoTask
 import com.example.pekomon.todoapp.data.repository.ToDoRepository
 import com.example.pekomon.todoapp.util.SearchAppBarState
@@ -21,7 +22,11 @@ class TodoViewModel @Inject constructor(
     private val repository: ToDoRepository
 ) : ViewModel() {
 
-    // TODO: Refactor not exposing these
+    val id: MutableState<Int> = mutableStateOf(0)
+    val title: MutableState<String> = mutableStateOf("")
+    val description: MutableState<String> = mutableStateOf("")
+    val priority: MutableState<Priority> = mutableStateOf(Priority.LOW)
+
 
     private val _searchAppBarState: MutableState<SearchAppBarState> = mutableStateOf(SearchAppBarState.CLOSED)
     val searchAppBarState: State<SearchAppBarState> = _searchAppBarState
@@ -68,5 +73,19 @@ class TodoViewModel @Inject constructor(
         newText: String = ""
     ) {
         _searchTextState.value = newText
+    }
+
+    fun updateUI(task: ToDoTask?) {
+        if (task != null) {
+            id.value = task.id
+            title.value = task.title
+            description.value = task.description
+            priority.value = task.priority
+        } else {
+            id.value = 0
+            title.value = ""
+            description.value = ""
+            priority.value = Priority.LOW
+        }
     }
 }
