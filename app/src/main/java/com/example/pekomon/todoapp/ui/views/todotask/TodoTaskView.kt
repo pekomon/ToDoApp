@@ -29,7 +29,7 @@ fun TodoTaskView(
             TaskContent(
                 title = title,
                 onTitleChanged = {
-                    viewModel.title.value = it
+                    viewModel.updateTitle(it)
                 },
                 description = description,
                 onDescriptionChanged = {

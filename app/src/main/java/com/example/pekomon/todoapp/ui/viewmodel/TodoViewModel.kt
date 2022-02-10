@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.pekomon.todoapp.data.models.Priority
 import com.example.pekomon.todoapp.data.models.ToDoTask
 import com.example.pekomon.todoapp.data.repository.ToDoRepository
+import com.example.pekomon.todoapp.util.Consts
 import com.example.pekomon.todoapp.util.SearchAppBarState
 import com.example.pekomon.todoapp.util.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -86,6 +87,12 @@ class TodoViewModel @Inject constructor(
             title.value = ""
             description.value = ""
             priority.value = Priority.LOW
+        }
+    }
+
+    fun updateTitle(newTitle: String) {
+        if (newTitle.length < Consts.TITLE_MAX_LENGTH) {
+            title.value = newTitle
         }
     }
 }
