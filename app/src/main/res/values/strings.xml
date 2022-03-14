@@ -18,4 +18,5 @@
     <string name="dropdown_icon_content_description">Drop down arrow</string>
     <string name="title_label">Title</string>
     <string name="description_label">Description</string>
+    <string name="toast_strings_are_empty">Strings are empty!</string>
 </resources>
