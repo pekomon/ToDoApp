@@ -25,9 +25,13 @@ fun TodoListView(
         todoViewModel.updateAllTAsks()
     }
 
+    val action by todoViewModel.action
+
     val allTasks by todoViewModel.allTasks.collectAsState()
     val searchAppBarState: SearchAppBarState by todoViewModel.searchAppBarState
     val searchTextState: String by todoViewModel.searchTextState
+
+    todoViewModel.handleDatabaseActions(action = action)
 
     Scaffold(
         content = {
