@@ -20,4 +20,5 @@
     <string name="description_label">Description</string>
     <string name="toast_strings_are_empty">Strings are empty!</string>
     <string name="generic_ok">OK</string>
+    <string name="action_undo">UNDO</string>
 </resources>

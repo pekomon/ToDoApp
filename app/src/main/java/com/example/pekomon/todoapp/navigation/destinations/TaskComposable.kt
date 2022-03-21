@@ -29,7 +29,9 @@ fun NavGraphBuilder.taskComposable(
         val selectedTask by todoViewModel.selectedTask.collectAsState()
 
         LaunchedEffect(key1 = selectedTask) {
-            todoViewModel.updateUI(task = selectedTask)
+            if (selectedTask != null || taskId == -1) {
+                todoViewModel.updateUI(task = selectedTask)
+            }
         }
 
         TodoTaskView(

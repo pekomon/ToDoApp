@@ -36,6 +36,9 @@ fun TodoListView(
     HandleDbActionAndDisplaySnackBar(
         scaffoldState = scaffoldState,
         handleDatabaseActions = { todoViewModel.handleDatabaseActions(action) },
+        onUndoClicked = {
+                        todoViewModel.action.value = it
+        },
         taskTitle = todoViewModel.title.value,
         action = action
     )
@@ -81,21 +84,47 @@ fun ListFab(
 fun HandleDbActionAndDisplaySnackBar(
     scaffoldState: ScaffoldState,
     handleDatabaseActions: () -> Unit,
+    onUndoClicked: (Action) -> Unit,
     taskTitle: String,
     action: Action
 ) {
     handleDatabaseActions()
 
-    val okText = stringResource(id = R.string.generic_ok)
+    val actionText = getActionLabel(action = action)
     val scope = rememberCoroutineScope()
     LaunchedEffect(key1 = action) {
         scope.launch {
             if (action != Action.NO_ACTION) {
                 val snackBarResult = scaffoldState.snackbarHostState.showSnackbar(
                     message = "${action.name}: $taskTitle",
-                    actionLabel = okText
+                    actionLabel = actionText
+                )
+                handleSnackBarAction(
+                    action = action,
+                    snackBarResult = snackBarResult,
+                    onUndoClicked = onUndoClicked
                 )
             }
         }
+    }
+}
+
+@Composable
+private fun getActionLabel(action: Action): String {
+    return if (action.name == "DELETE") {
+        stringResource(id = R.string.action_undo)
+    } else {
+        stringResource(id = R.string.generic_ok)
+    }
+}
+
+private fun handleSnackBarAction(
+    action: Action,
+    snackBarResult: SnackbarResult,
+    onUndoClicked: (Action) -> Unit
+) {
+    if (snackBarResult == SnackbarResult.ActionPerformed &&
+            action == Action.DELETE) {
+        onUndoClicked(Action.UNDO)
     }
 }
