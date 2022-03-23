@@ -56,6 +56,8 @@ class TodoViewModel @Inject constructor(
             )
             repository.addTask(task = todoTask)
         }
+        _searchAppBarState.value = SearchAppBarState.CLOSED
+        _searchTextState.value = ""
     }
 
     private fun updateTask() {
