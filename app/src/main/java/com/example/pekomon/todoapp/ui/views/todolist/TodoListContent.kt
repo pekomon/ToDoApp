@@ -23,25 +23,49 @@ import com.example.pekomon.todoapp.ui.theme.LIST_ITEM_ELEVATION
 import com.example.pekomon.todoapp.ui.theme.PADDING_LARGE
 import com.example.pekomon.todoapp.ui.theme.PRIORITY_INDICATOR_SIZE
 import com.example.pekomon.todoapp.util.Result
+import com.example.pekomon.todoapp.util.SearchAppBarState
 
 @ExperimentalMaterialApi
 @Composable
 fun TodoListContent(
-    tasks: Result<List<ToDoTask>>,
+    // TODO: List selection logic should be done on upper level
+    allTasks: Result<List<ToDoTask>>,
+    searchedTasks: Result<List<ToDoTask>>,
+    searchAppBarState: SearchAppBarState,
     onItemClicked: ((taskId: Int) -> Unit)
 ) {
-    if (tasks is Result.Success) {
-        if (tasks.data.isNotEmpty()) {
-            DisplayTasks(
-                tasks = tasks.data,
+    if (searchAppBarState == SearchAppBarState.TRIGGERED) {
+        if (searchedTasks is Result.Success) {
+            HandleListContent(
+                tasks = searchedTasks.data,
                 onItemClicked = onItemClicked
             )
         }
-        else {
-            EmptyListContent()
+    } else {
+        if (allTasks is Result.Success) {
+            HandleListContent(
+                tasks = allTasks.data,
+                onItemClicked = onItemClicked
+            )
         }
     }
-    // TODO: Handle other Results too
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+fun HandleListContent(
+    tasks: List<ToDoTask>,
+    onItemClicked: (taskId: Int) -> Unit
+) {
+    if (tasks.isNotEmpty()) {
+        DisplayTasks(
+            tasks = tasks,
+            onItemClicked = onItemClicked
+        )
+    }
+    else {
+        EmptyListContent()
+    }
 }
 
 @ExperimentalMaterialApi

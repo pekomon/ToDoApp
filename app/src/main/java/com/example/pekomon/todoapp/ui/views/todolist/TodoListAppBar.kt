@@ -61,7 +61,9 @@ fun TodoListAppBar(
                     todoViewModel.closeSearchAppBar()
                     todoViewModel.searchTextChanged()
                 },
-                onSearchClicked = {}
+                onSearchClicked = {
+                    todoViewModel.searchTasks("%$it%")
+                }
             )
         }
     }

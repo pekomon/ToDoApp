@@ -6,7 +6,6 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.pekomon.todoapp.R
 import com.example.pekomon.todoapp.extensions.fabBackgroundColor
 import com.example.pekomon.todoapp.ui.viewmodel.TodoViewModel
@@ -22,16 +21,18 @@ fun TodoListView(
     todoViewModel: TodoViewModel
 ) {
     LaunchedEffect(key1 = true) {
-        todoViewModel.updateAllTAsks()
+        todoViewModel.getAllTasks()
     }
 
     val action by todoViewModel.action
 
     val allTasks by todoViewModel.allTasks.collectAsState()
+    val searchedTasks by todoViewModel.searchedTasks.collectAsState()
     val searchAppBarState: SearchAppBarState by todoViewModel.searchAppBarState
     val searchTextState: String by todoViewModel.searchTextState
 
     val scaffoldState = rememberScaffoldState()
+
 
     HandleDbActionAndDisplaySnackBar(
         scaffoldState = scaffoldState,
@@ -47,7 +48,9 @@ fun TodoListView(
         scaffoldState = scaffoldState,
         content = {
             TodoListContent(
-                tasks = allTasks,
+                allTasks = allTasks,
+                searchedTasks = searchedTasks,
+                searchAppBarState = searchAppBarState,
                 onItemClicked = onListItemClicked
             )
         },

@@ -32,12 +32,14 @@ class TodoViewModel @Inject constructor(
     val description: MutableState<String> = mutableStateOf("")
     val priority: MutableState<Priority> = mutableStateOf(Priority.LOW)
 
-
     private val _searchAppBarState: MutableState<SearchAppBarState> = mutableStateOf(SearchAppBarState.CLOSED)
     val searchAppBarState: State<SearchAppBarState> = _searchAppBarState
 
     private val _searchTextState: MutableState<String> = mutableStateOf("")
     val searchTextState: State<String> = _searchTextState
+
+    private val _searchedTasks = MutableStateFlow<Result<List<ToDoTask>>>(Result.Idle)
+    val searchedTasks: StateFlow<Result<List<ToDoTask>>> = _searchedTasks
 
     private val _allTasks = MutableStateFlow<Result<List<ToDoTask>>>(Result.Idle)
     val allTasks: StateFlow<Result<List<ToDoTask>>> = _allTasks
@@ -100,7 +102,7 @@ class TodoViewModel @Inject constructor(
         this.action.value = Action.NO_ACTION
     }
 
-    fun updateAllTAsks() {
+    fun getAllTasks() {
         _allTasks.value = Result.Loading
         try {
             viewModelScope.launch {
@@ -119,6 +121,21 @@ class TodoViewModel @Inject constructor(
                 _selectedTask.value = task
             }
         }
+    }
+
+    fun searchTasks(searchQuery: String) {
+        _searchedTasks.value = Result.Loading
+        try {
+            viewModelScope.launch {
+                repository.search(query = searchQuery)
+                    .collect { searchedTasks ->
+                        _searchedTasks.value = Result.Success(searchedTasks)
+                    }
+            }
+        } catch (t: Throwable) {
+            _searchedTasks.value = Result.Error(t)
+        }
+        _searchAppBarState.value = SearchAppBarState.TRIGGERED
     }
 
     fun openSearchAppBar() {
