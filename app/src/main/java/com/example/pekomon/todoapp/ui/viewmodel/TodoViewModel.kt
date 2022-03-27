@@ -5,6 +5,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.pekomon.todoapp.data.models.Priority
 import com.example.pekomon.todoapp.data.models.ToDoTask
 import com.example.pekomon.todoapp.data.repository.ToDoRepository
@@ -84,6 +85,12 @@ class TodoViewModel @Inject constructor(
         }
     }
 
+    private fun deleteAllTasks() {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteAll()
+        }
+    }
+
     fun handleDatabaseActions(action: Action) {
         when (action) {
             Action.ADD -> {
@@ -95,7 +102,9 @@ class TodoViewModel @Inject constructor(
             Action.DELETE -> {
                 deleteTask()
             }
-            Action.DELETE_ALL -> {}
+            Action.DELETE_ALL -> {
+                deleteAllTasks()
+            }
             Action.UNDO -> {
                 addTask()
             }

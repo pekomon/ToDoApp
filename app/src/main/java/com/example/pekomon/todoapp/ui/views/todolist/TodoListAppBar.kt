@@ -31,6 +31,7 @@ import com.example.pekomon.todoapp.ui.theme.PADDING_LARGE
 import com.example.pekomon.todoapp.ui.theme.TOP_APP_BAR_HEIGHT
 import com.example.pekomon.todoapp.ui.theme.Typography
 import com.example.pekomon.todoapp.ui.viewmodel.TodoViewModel
+import com.example.pekomon.todoapp.util.Action
 import com.example.pekomon.todoapp.util.SearchAppBarState
 import com.example.pekomon.todoapp.util.TrailingIconState
 
@@ -48,7 +49,9 @@ fun TodoListAppBar(
                     todoViewModel.openSearchAppBar()
                 },
                 onSortClicked = {},
-                onDeleteAllClicked = {}
+                onDeleteAllClicked = {
+                    todoViewModel.action.value = Action.DELETE_ALL
+                }
             )
         }
         else -> {
