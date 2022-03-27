@@ -94,12 +94,13 @@ fun HandleDbActionAndDisplaySnackBar(
     handleDatabaseActions()
 
     val actionText = getActionLabel(action = action)
+    val messageText = getSnackBarMessage(action = action, taskTitle = taskTitle)
     val scope = rememberCoroutineScope()
     LaunchedEffect(key1 = action) {
         scope.launch {
             if (action != Action.NO_ACTION) {
                 val snackBarResult = scaffoldState.snackbarHostState.showSnackbar(
-                    message = "${action.name}: $taskTitle",
+                    message = messageText,
                     actionLabel = actionText
                 )
                 handleSnackBarAction(
@@ -109,6 +110,14 @@ fun HandleDbActionAndDisplaySnackBar(
                 )
             }
         }
+    }
+}
+
+@Composable
+private fun getSnackBarMessage(action: Action, taskTitle: String): String {
+    return when (action) {
+        Action.DELETE_ALL -> stringResource(id = R.string.snack_bar_message_all_tasks_deleted)
+        else -> "${action.name}: $taskTitle"
     }
 }
 
