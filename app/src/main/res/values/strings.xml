@@ -22,4 +22,8 @@
     <string name="generic_ok">OK</string>
     <string name="action_undo">UNDO</string>
     <string name="snack_bar_message_all_tasks_deleted">All tasks deleted</string>
+    <string name="generic_yes">Yes</string>
+    <string name="generic_no">No</string>
+    <string name="dialog_title_delete_task">Delete \'%1$s\'?</string>
+    <string name="dialog_message_delete_task">Are you sure you want to delete \'%1$s\'?</string>
 </resources>
