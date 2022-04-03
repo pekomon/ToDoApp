@@ -23,6 +23,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.pekomon.todoapp.R
+import com.example.pekomon.todoapp.components.ConfirmationDialog
 import com.example.pekomon.todoapp.components.PriorityItem
 import com.example.pekomon.todoapp.data.models.Priority
 import com.example.pekomon.todoapp.extensions.topAppBarBackgroundColor
@@ -49,7 +50,7 @@ fun TodoListAppBar(
                     todoViewModel.openSearchAppBar()
                 },
                 onSortClicked = {},
-                onDeleteAllClicked = {
+                onDeleteAllConfirmed = {
                     todoViewModel.action.value = Action.DELETE_ALL
                 }
             )
@@ -76,7 +77,7 @@ fun TodoListAppBar(
 fun DefaultTodoListAppBar(
     onSearchClicked: (() -> Unit),
     onSortClicked: ((Priority) -> Unit),
-    onDeleteAllClicked: () -> Unit
+    onDeleteAllConfirmed: () -> Unit
 ) {
     TopAppBar(
         title = {
@@ -90,7 +91,7 @@ fun DefaultTodoListAppBar(
             TodoListAppBarActions(
                 onSearchClicked = onSearchClicked,
                 onSortClicked = onSortClicked,
-                onDeleteAllClicked = onDeleteAllClicked
+                onDeleteAllConfirmed = onDeleteAllConfirmed
             )
         }
     )
@@ -100,12 +101,23 @@ fun DefaultTodoListAppBar(
 fun TodoListAppBarActions(
     onSearchClicked: (() -> Unit),
     onSortClicked: ((Priority) -> Unit),
-    onDeleteAllClicked: (() -> Unit)
-
+    onDeleteAllConfirmed: (() -> Unit)
 ) {
+    var isConfirmationDialogVisible by remember {
+        mutableStateOf(false)
+    }
+
+    ConfirmationDialog(
+        title = stringResource(id = R.string.dialog_title_delete_all_tasks),
+        message = stringResource(id = R.string.dialog_message_delete_all_tasks),
+        isVisible = isConfirmationDialogVisible,
+        onClose = { isConfirmationDialogVisible = false },
+        onConfirmClicked = { onDeleteAllConfirmed() }
+    )
+
     SearchAction(onClicked = onSearchClicked)
     SortAction(onSortClicked = onSortClicked)
-    DeleteAllAction(onClicked = onDeleteAllClicked)
+    DeleteAllAction(onClicked = { isConfirmationDialogVisible = true })
 }
 
 @Composable
@@ -313,7 +325,7 @@ fun PreviewDefaultTodoListAppBar() {
     DefaultTodoListAppBar(
         onSearchClicked = {},
         onSortClicked = {},
-        onDeleteAllClicked = {}
+        onDeleteAllConfirmed = {}
     )
 }
 
