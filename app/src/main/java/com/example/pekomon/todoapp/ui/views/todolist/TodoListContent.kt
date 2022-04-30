@@ -31,22 +31,42 @@ fun TodoListContent(
     // TODO: List selection logic should be done on upper level
     allTasks: Result<List<ToDoTask>>,
     searchedTasks: Result<List<ToDoTask>>,
+    lowPriorityTasks: List<ToDoTask>,
+    highPriorityTasks: List<ToDoTask>,
+    sortState: Result<Priority>,
     searchAppBarState: SearchAppBarState,
     onItemClicked: ((taskId: Int) -> Unit)
 ) {
-    if (searchAppBarState == SearchAppBarState.TRIGGERED) {
-        if (searchedTasks is Result.Success) {
-            HandleListContent(
-                tasks = searchedTasks.data,
-                onItemClicked = onItemClicked
-            )
-        }
-    } else {
-        if (allTasks is Result.Success) {
-            HandleListContent(
-                tasks = allTasks.data,
-                onItemClicked = onItemClicked
-            )
+    if (sortState is Result.Success) {
+        when {
+            searchAppBarState == SearchAppBarState.TRIGGERED -> {
+                if (searchedTasks is Result.Success) {
+                    HandleListContent(
+                        tasks = searchedTasks.data,
+                        onItemClicked = onItemClicked
+                    )
+                }
+            }
+            sortState.data == Priority.NONE -> {
+                if (allTasks is Result.Success) {
+                    HandleListContent(
+                        tasks = allTasks.data,
+                        onItemClicked = onItemClicked
+                    )
+                }
+            }
+            sortState.data == Priority.LOW -> {
+                HandleListContent(
+                    tasks = lowPriorityTasks,
+                    onItemClicked = onItemClicked
+                )
+            }
+            sortState.data == Priority.HIGH -> {
+                HandleListContent(
+                    tasks = highPriorityTasks,
+                    onItemClicked = onItemClicked
+                )
+            }
         }
     }
 }

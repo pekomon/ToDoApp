@@ -22,12 +22,16 @@ fun TodoListView(
 ) {
     LaunchedEffect(key1 = true) {
         todoViewModel.getAllTasks()
+        todoViewModel.readSortState()
     }
 
     val action by todoViewModel.action
 
     val allTasks by todoViewModel.allTasks.collectAsState()
     val searchedTasks by todoViewModel.searchedTasks.collectAsState()
+    val sortState by todoViewModel.sortState.collectAsState()
+    val lowPriorityTasks by todoViewModel.lowPriorityTasks.collectAsState()
+    val highPriorityTasks by todoViewModel.highPriorityTasks.collectAsState()
     val searchAppBarState: SearchAppBarState by todoViewModel.searchAppBarState
     val searchTextState: String by todoViewModel.searchTextState
 
@@ -50,6 +54,9 @@ fun TodoListView(
             TodoListContent(
                 allTasks = allTasks,
                 searchedTasks = searchedTasks,
+                lowPriorityTasks = lowPriorityTasks,
+                highPriorityTasks = highPriorityTasks,
+                sortState = sortState,
                 searchAppBarState = searchAppBarState,
                 onItemClicked = onListItemClicked
             )

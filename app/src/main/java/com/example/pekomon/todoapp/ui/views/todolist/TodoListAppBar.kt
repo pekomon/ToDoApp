@@ -49,7 +49,7 @@ fun TodoListAppBar(
                 onSearchClicked = {
                     todoViewModel.openSearchAppBar()
                 },
-                onSortClicked = {},
+                onSortClicked = { todoViewModel.persistSortState(it)},
                 onDeleteAllConfirmed = {
                     todoViewModel.action.value = Action.DELETE_ALL
                 }

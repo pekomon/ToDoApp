@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.pekomon.todoapp.data.models.Priority
 import com.example.pekomon.todoapp.data.models.ToDoTask
+import com.example.pekomon.todoapp.data.repository.DataStoreRepository
 import com.example.pekomon.todoapp.data.repository.ToDoRepository
 import com.example.pekomon.todoapp.util.Action
 import com.example.pekomon.todoapp.util.Consts
@@ -15,15 +16,15 @@ import com.example.pekomon.todoapp.util.SearchAppBarState
 import com.example.pekomon.todoapp.util.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
 class TodoViewModel @Inject constructor(
-    private val repository: ToDoRepository
+    private val repository: ToDoRepository,
+    private val dataStoreRepository: DataStoreRepository
 ) : ViewModel() {
 
     var action: MutableState<Action> = mutableStateOf(Action.NO_ACTION)
@@ -48,6 +49,21 @@ class TodoViewModel @Inject constructor(
     private val _selectedTask: MutableStateFlow<ToDoTask?> = MutableStateFlow(null)
     val selectedTask: StateFlow<ToDoTask?> = _selectedTask
 
+    private val _sortState = MutableStateFlow<Result<Priority>>(Result.Idle)
+    val sortState: StateFlow<Result<Priority>> = _sortState
+
+    // converting to state flow
+    val lowPriorityTasks: StateFlow<List<ToDoTask>> = repository.getAllByLowPriority.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(),
+        initialValue = emptyList()
+    )
+
+    val highPriorityTasks: StateFlow<List<ToDoTask>> = repository.getAllByHighPriority.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(),
+        initialValue = emptyList()
+    )
     private fun addTask() {
         viewModelScope.launch(Dispatchers.IO) {
             val todoTask = ToDoTask(
@@ -185,5 +201,26 @@ class TodoViewModel @Inject constructor(
 
     fun validateFields(): Boolean {
         return title.value.isNotEmpty() && description.value.isNotEmpty()
+    }
+
+    fun persistSortState(priority: Priority) {
+        viewModelScope.launch(Dispatchers.IO) {
+            dataStoreRepository.persistSortState(priority = priority)
+        }
+    }
+
+    fun readSortState() {
+        _sortState.value = Result.Loading
+        try {
+            viewModelScope.launch(Dispatchers.IO) {
+                dataStoreRepository.readSortState
+                    .map { Priority.valueOf(it) }
+                    .collect {
+                        _sortState.value = Result.Success(it)
+                    }
+            }
+        } catch (e: Exception) {
+            _sortState.value = Result.Error(e)
+        }
     }
 }
