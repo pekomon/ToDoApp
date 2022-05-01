@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -17,9 +18,17 @@ import com.example.pekomon.todoapp.R
 import com.example.pekomon.todoapp.extensions.splashScreenBackground
 import com.example.pekomon.todoapp.ui.theme.SPLASH_SCREEN_LOGO_SIZE
 import com.example.pekomon.todoapp.ui.theme.ToDoAppTheme
+import com.example.pekomon.todoapp.util.Consts.SPLASH_SCREEN_DELAY_MILLIS
+import kotlinx.coroutines.delay
 
 @Composable
-fun SplashScreen() {
+fun SplashScreen(
+    navigateToListScreen: () -> Unit
+) {
+    LaunchedEffect(key1 = true) {
+        delay(SPLASH_SCREEN_DELAY_MILLIS)
+        navigateToListScreen()
+    }
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -46,7 +55,9 @@ fun getLogoForTheme(): Int {
 @Composable
 @Preview
 fun PreviewSplashScreen() {
-    SplashScreen()
+    SplashScreen(
+        navigateToListScreen = {}
+    )
 
 }
 
@@ -54,7 +65,9 @@ fun PreviewSplashScreen() {
 @Preview
 fun PreviewSplashScreenDarkTheme() {
     ToDoAppTheme(darkTheme = true) {
-        SplashScreen()
+        SplashScreen(
+            navigateToListScreen = {}
+        )
     }
 
 

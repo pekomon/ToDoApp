@@ -9,9 +9,11 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.example.pekomon.todoapp.navigation.destinations.listComposable
+import com.example.pekomon.todoapp.navigation.destinations.splashComposable
 import com.example.pekomon.todoapp.navigation.destinations.taskComposable
 import com.example.pekomon.todoapp.ui.viewmodel.TodoViewModel
 import com.example.pekomon.todoapp.util.Consts.LIST_SCREEN
+import com.example.pekomon.todoapp.util.Consts.SPLASH_SCREEN
 
 @ExperimentalMaterialApi
 @Composable
@@ -25,8 +27,11 @@ fun SetupNavigation(
     
     NavHost(
         navController = navHostController,
-        startDestination = LIST_SCREEN
+        startDestination = SPLASH_SCREEN
     ) {
+        splashComposable(
+            navigateToListScreen = screen.splash
+        )
         listComposable(
             navigateToTaskScreen = screen.task,
             todoViewModel = todoViewModel

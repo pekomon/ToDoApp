@@ -4,6 +4,7 @@ object Consts {
     const val TODO_TABLE_NAME = "todo"
     const val DATABASE_NAME = "todo_db"
 
+    const val SPLASH_SCREEN = "splash"
     const val LIST_SCREEN = "list/{action}"
     const val TASK_SCREEN = "task/{taskId}"
 
@@ -18,4 +19,5 @@ object Consts {
     const val TITLE_MAX_LENGTH = 25
 
     const val LIST_ITEM_ANIMATION_DURATION_MILLIS = 300
+    const val SPLASH_SCREEN_DELAY_MILLIS = 2000L
 }
