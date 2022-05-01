@@ -1,20 +1,18 @@
 package com.example.pekomon.todoapp.navigation
 
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
 import com.example.pekomon.todoapp.navigation.destinations.listComposable
 import com.example.pekomon.todoapp.navigation.destinations.splashComposable
 import com.example.pekomon.todoapp.navigation.destinations.taskComposable
 import com.example.pekomon.todoapp.ui.viewmodel.TodoViewModel
-import com.example.pekomon.todoapp.util.Consts.LIST_SCREEN
 import com.example.pekomon.todoapp.util.Consts.SPLASH_SCREEN
+import com.google.accompanist.navigation.animation.AnimatedNavHost
 
+@OptIn(ExperimentalAnimationApi::class)
 @ExperimentalMaterialApi
 @Composable
 fun SetupNavigation(
@@ -24,8 +22,8 @@ fun SetupNavigation(
     val screen = remember(navHostController) {
         Screens(navHostController = navHostController)
     }
-    
-    NavHost(
+
+    AnimatedNavHost(
         navController = navHostController,
         startDestination = SPLASH_SCREEN
     ) {
