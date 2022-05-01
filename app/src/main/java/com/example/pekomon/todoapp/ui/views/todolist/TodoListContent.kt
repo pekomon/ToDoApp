@@ -1,6 +1,11 @@
 package com.example.pekomon.todoapp.ui.views.todolist
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -9,8 +14,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
@@ -27,8 +31,11 @@ import com.example.pekomon.todoapp.extensions.taskListItemBackGroundColor
 import com.example.pekomon.todoapp.extensions.taskListItemTextColor
 import com.example.pekomon.todoapp.ui.theme.*
 import com.example.pekomon.todoapp.util.Action
+import com.example.pekomon.todoapp.util.Consts.LIST_ITEM_ANIMATION_DURATION_MILLIS
 import com.example.pekomon.todoapp.util.Result
 import com.example.pekomon.todoapp.util.SearchAppBarState
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @ExperimentalMaterialApi
 @Composable
@@ -99,6 +106,7 @@ fun HandleListContent(
     }
 }
 
+@OptIn(ExperimentalAnimationApi::class)
 @ExperimentalMaterialApi
 @Composable
 fun DisplayTasks(
@@ -118,7 +126,13 @@ fun DisplayTasks(
             val dismissDirection = dismissState.dismissDirection
             val isDismissed = dismissState.isDismissed(DismissDirection.EndToStart)
             if (isDismissed && dismissDirection == DismissDirection.EndToStart) {
-                onSwipeToDelete(Action.DELETE, task)
+                val scope = rememberCoroutineScope()
+                scope.launch {
+                    // Wait for animation
+                    delay(LIST_ITEM_ANIMATION_DURATION_MILLIS.toLong())
+                    onSwipeToDelete(Action.DELETE, task)
+                }
+
             }
 
             val degrees by animateFloatAsState(
@@ -129,23 +143,43 @@ fun DisplayTasks(
                 }
             )
 
-            SwipeToDismiss(
-                state = dismissState,
-                directions = setOf(DismissDirection.EndToStart),
-                dismissThresholds = {
-                    FractionalThreshold(fraction = 0.2f)
-                },
-                background = {
-                    SwipeToDeleteBackground(animationDegrees = degrees)
-                },
-                dismissContent = {
-                    TodoListItem(
-                        toDoTask = task,
-                        onClicked = onItemClicked
-                    )
-                }
+            var itemAppeared by remember {
+                mutableStateOf(false)
+            }
+            LaunchedEffect(key1 = true) {
+                itemAppeared = true
+            }
 
-            )
+            AnimatedVisibility(
+                visible = itemAppeared && ! isDismissed,
+                enter = expandVertically(
+                    animationSpec = tween(
+                        durationMillis = LIST_ITEM_ANIMATION_DURATION_MILLIS
+                    )
+                ),
+                exit = shrinkVertically(
+                    animationSpec = tween(
+                        durationMillis = LIST_ITEM_ANIMATION_DURATION_MILLIS
+                    )
+                )
+            ) {
+                SwipeToDismiss(
+                    state = dismissState,
+                    directions = setOf(DismissDirection.EndToStart),
+                    dismissThresholds = {
+                        FractionalThreshold(fraction = 0.2f)
+                    },
+                    background = {
+                        SwipeToDeleteBackground(animationDegrees = degrees)
+                    },
+                    dismissContent = {
+                        TodoListItem(
+                            toDoTask = task,
+                            onClicked = onItemClicked
+                        )
+                    }
+                )
+            }
         }
     }
 }

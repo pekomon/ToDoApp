@@ -16,4 +16,6 @@ object Consts {
     const val TASK_ID_ADD_NEW = -1
 
     const val TITLE_MAX_LENGTH = 25
+
+    const val LIST_ITEM_ANIMATION_DURATION_MILLIS = 300
 }
