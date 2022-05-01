@@ -58,6 +58,10 @@ fun TodoListView(
                 highPriorityTasks = highPriorityTasks,
                 sortState = sortState,
                 searchAppBarState = searchAppBarState,
+                onSwipeToDelete = { action, toDoTask ->
+                                  todoViewModel.action.value = action
+                    todoViewModel.updateUI(task = toDoTask)
+                },
                 onItemClicked = onListItemClicked
             )
         },

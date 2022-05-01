@@ -17,4 +17,6 @@ val MediumPriority = Color(0xFFFFC114)
 val HighPriority = Color(0xFFFF4646)
 val NoPriority = mediumGray
 
+val warningColor = Color(0xFFFF4646)
+
 

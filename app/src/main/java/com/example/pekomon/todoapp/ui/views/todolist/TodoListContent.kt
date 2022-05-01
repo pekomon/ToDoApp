@@ -1,27 +1,32 @@
 package com.example.pekomon.todoapp.ui.views.todolist
 
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.pekomon.todoapp.R
 import com.example.pekomon.todoapp.data.models.Priority
 import com.example.pekomon.todoapp.data.models.ToDoTask
 import com.example.pekomon.todoapp.extensions.taskListItemBackGroundColor
 import com.example.pekomon.todoapp.extensions.taskListItemTextColor
-import com.example.pekomon.todoapp.ui.theme.LIST_ITEM_ELEVATION
-import com.example.pekomon.todoapp.ui.theme.PADDING_LARGE
-import com.example.pekomon.todoapp.ui.theme.PRIORITY_INDICATOR_SIZE
+import com.example.pekomon.todoapp.ui.theme.*
+import com.example.pekomon.todoapp.util.Action
 import com.example.pekomon.todoapp.util.Result
 import com.example.pekomon.todoapp.util.SearchAppBarState
 
@@ -35,6 +40,7 @@ fun TodoListContent(
     highPriorityTasks: List<ToDoTask>,
     sortState: Result<Priority>,
     searchAppBarState: SearchAppBarState,
+    onSwipeToDelete: (Action, ToDoTask) -> Unit,
     onItemClicked: ((taskId: Int) -> Unit)
 ) {
     if (sortState is Result.Success) {
@@ -43,6 +49,7 @@ fun TodoListContent(
                 if (searchedTasks is Result.Success) {
                     HandleListContent(
                         tasks = searchedTasks.data,
+                        onSwipeToDelete = onSwipeToDelete,
                         onItemClicked = onItemClicked
                     )
                 }
@@ -51,6 +58,7 @@ fun TodoListContent(
                 if (allTasks is Result.Success) {
                     HandleListContent(
                         tasks = allTasks.data,
+                        onSwipeToDelete = onSwipeToDelete,
                         onItemClicked = onItemClicked
                     )
                 }
@@ -58,12 +66,14 @@ fun TodoListContent(
             sortState.data == Priority.LOW -> {
                 HandleListContent(
                     tasks = lowPriorityTasks,
+                    onSwipeToDelete = onSwipeToDelete,
                     onItemClicked = onItemClicked
                 )
             }
             sortState.data == Priority.HIGH -> {
                 HandleListContent(
                     tasks = highPriorityTasks,
+                    onSwipeToDelete = onSwipeToDelete,
                     onItemClicked = onItemClicked
                 )
             }
@@ -75,15 +85,16 @@ fun TodoListContent(
 @Composable
 fun HandleListContent(
     tasks: List<ToDoTask>,
+    onSwipeToDelete: (Action, ToDoTask) -> Unit,
     onItemClicked: (taskId: Int) -> Unit
 ) {
     if (tasks.isNotEmpty()) {
         DisplayTasks(
             tasks = tasks,
+            onSwipeToDelete = onSwipeToDelete,
             onItemClicked = onItemClicked
         )
-    }
-    else {
+    } else {
         EmptyListContent()
     }
 }
@@ -92,6 +103,7 @@ fun HandleListContent(
 @Composable
 fun DisplayTasks(
     tasks: List<ToDoTask>,
+    onSwipeToDelete: (Action, ToDoTask) -> Unit,
     onItemClicked: ((taskId: Int) -> Unit)
 ) {
     LazyColumn {
@@ -101,9 +113,38 @@ fun DisplayTasks(
                 task.id
             }
         ) { task ->
-            TodoListItem(
-                toDoTask = task,
-                onClicked = onItemClicked
+
+            val dismissState = rememberDismissState()
+            val dismissDirection = dismissState.dismissDirection
+            val isDismissed = dismissState.isDismissed(DismissDirection.EndToStart)
+            if (isDismissed && dismissDirection == DismissDirection.EndToStart) {
+                onSwipeToDelete(Action.DELETE, task)
+            }
+
+            val degrees by animateFloatAsState(
+                targetValue = if (dismissState.targetValue == DismissValue.Default) {
+                    0f
+                } else {
+                    -45f
+                }
+            )
+
+            SwipeToDismiss(
+                state = dismissState,
+                directions = setOf(DismissDirection.EndToStart),
+                dismissThresholds = {
+                    FractionalThreshold(fraction = 0.2f)
+                },
+                background = {
+                    SwipeToDeleteBackground(animationDegrees = degrees)
+                },
+                dismissContent = {
+                    TodoListItem(
+                        toDoTask = task,
+                        onClicked = onItemClicked
+                    )
+                }
+
             )
         }
     }
@@ -154,7 +195,7 @@ fun TodoListItem(
                         )
                     }
                 }
-                
+
             }
             Text(
                 modifier = Modifier.fillMaxWidth(),
@@ -168,10 +209,28 @@ fun TodoListItem(
     }
 }
 
+@Composable
+fun SwipeToDeleteBackground(animationDegrees: Float) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(warningColor)
+            .padding(horizontal = PADDING_EXTRA_LARGE),
+        contentAlignment = Alignment.CenterEnd
+    ) {
+        Icon(
+            modifier = Modifier.rotate(degrees = animationDegrees),
+            imageVector = Icons.Filled.Delete,
+            contentDescription = stringResource(id = R.string.delete_icon_content_description),
+            tint = Color.White
+        )
+    }
+}
+
 @ExperimentalMaterialApi
 @Composable
 @Preview
-fun PreviewTodoListItem()  {
+fun PreviewTodoListItem() {
     TodoListItem(
         toDoTask = ToDoTask(
             id = 2,
