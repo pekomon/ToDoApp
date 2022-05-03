@@ -3,6 +3,7 @@ package com.example.pekomon.todoapp.navigation.destinations
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import com.google.accompanist.navigation.animation.composable
@@ -29,7 +30,9 @@ fun NavGraphBuilder.listComposable(
         LaunchedEffect(key1 = action) {
             todoViewModel.action.value = action
         }
+        val dbAction by todoViewModel.action
         TodoListView(
+            action = dbAction,
             onListItemClicked =  navigateToTaskScreen,
             todoViewModel = todoViewModel
         )

@@ -126,7 +126,6 @@ class TodoViewModel @Inject constructor(
             }
             else -> {}
         }
-        this.action.value = Action.NO_ACTION
     }
 
     fun getAllTasks() {

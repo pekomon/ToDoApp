@@ -17,6 +17,7 @@ import kotlinx.coroutines.launch
 @ExperimentalMaterialApi
 @Composable
 fun TodoListView(
+    action: Action,
     onListItemClicked: ((taskId: Int) -> Unit),
     todoViewModel: TodoViewModel
 ) {
@@ -25,7 +26,9 @@ fun TodoListView(
         todoViewModel.readSortState()
     }
 
-    val action by todoViewModel.action
+    LaunchedEffect(key1 = action) {
+        todoViewModel.handleDatabaseActions(action = action)
+    }
 
     val allTasks by todoViewModel.allTasks.collectAsState()
     val searchedTasks by todoViewModel.searchedTasks.collectAsState()
@@ -38,9 +41,9 @@ fun TodoListView(
     val scaffoldState = rememberScaffoldState()
 
 
-    HandleDbActionAndDisplaySnackBar(
+    DisplaySnackBar(
         scaffoldState = scaffoldState,
-        handleDatabaseActions = { todoViewModel.handleDatabaseActions(action) },
+        onComplete = { todoViewModel.action.value = it },
         onUndoClicked = {
                         todoViewModel.action.value = it
         },
@@ -95,15 +98,13 @@ fun ListFab(
 }
 
 @Composable
-fun HandleDbActionAndDisplaySnackBar(
+fun DisplaySnackBar(
     scaffoldState: ScaffoldState,
-    handleDatabaseActions: () -> Unit,
+    onComplete: (Action) -> Unit,
     onUndoClicked: (Action) -> Unit,
     taskTitle: String,
     action: Action
 ) {
-    handleDatabaseActions()
-
     val actionText = getActionLabel(action = action)
     val messageText = getSnackBarMessage(action = action, taskTitle = taskTitle)
     val scope = rememberCoroutineScope()
@@ -120,6 +121,7 @@ fun HandleDbActionAndDisplaySnackBar(
                     onUndoClicked = onUndoClicked
                 )
             }
+            onComplete(Action.NO_ACTION)
         }
     }
 }
