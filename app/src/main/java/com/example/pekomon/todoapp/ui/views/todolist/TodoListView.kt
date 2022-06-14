@@ -53,8 +53,9 @@ fun TodoListView(
 
     Scaffold(
         scaffoldState = scaffoldState,
-        content = {
+        content = { padding ->
             TodoListContent(
+                padding = padding,
                 allTasks = allTasks,
                 searchedTasks = searchedTasks,
                 lowPriorityTasks = lowPriorityTasks,
@@ -120,8 +121,8 @@ fun DisplaySnackBar(
                     snackBarResult = snackBarResult,
                     onUndoClicked = onUndoClicked
                 )
+                onComplete(Action.NO_ACTION)
             }
-            onComplete(Action.NO_ACTION)
         }
     }
 }

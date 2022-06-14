@@ -41,6 +41,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun TodoListContent(
     // TODO: List selection logic should be done on upper level
+    padding: PaddingValues,
     allTasks: Result<List<ToDoTask>>,
     searchedTasks: Result<List<ToDoTask>>,
     lowPriorityTasks: List<ToDoTask>,

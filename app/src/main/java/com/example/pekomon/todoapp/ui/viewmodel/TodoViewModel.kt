@@ -1,5 +1,6 @@
 package com.example.pekomon.todoapp.ui.viewmodel
 
+import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -108,6 +109,7 @@ class TodoViewModel @Inject constructor(
     }
 
     fun handleDatabaseActions(action: Action) {
+        Log.d("Viewmodel", "handleDatabaseActions $action")
         when (action) {
             Action.ADD -> {
                 addTask()
