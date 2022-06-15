@@ -22,13 +22,19 @@ fun TaskContent(
     description: String,
     onDescriptionChanged: ((String) -> Unit),
     priority: Priority,
-    onPriorityChanged: ((Priority) -> Unit)
+    onPriorityChanged: ((Priority) -> Unit),
+    paddingValues: PaddingValues = PaddingValues(PADDING_LARGE)
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colors.background)
-            .padding(all = PADDING_LARGE)
+            .padding(
+                start = PADDING_LARGE,
+                end = PADDING_LARGE,
+                top = PADDING_LARGE,
+                bottom = paddingValues.calculateBottomPadding()
+            )
     ) {
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
