@@ -18,8 +18,7 @@ class MainActivity : ComponentActivity() {
     private lateinit var navHostController: NavHostController
     private val todoViewModel: TodoViewModel by viewModels()
 
-    @OptIn(ExperimentalAnimationApi::class)
-    @ExperimentalMaterialApi
+    @OptIn(ExperimentalAnimationApi::class, ExperimentalMaterialApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
