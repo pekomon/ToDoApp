@@ -6,7 +6,6 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.pekomon.todoapp.data.models.Priority
 import com.example.pekomon.todoapp.data.models.ToDoTask
 import com.example.pekomon.todoapp.data.repository.DataStoreRepository
@@ -65,6 +64,12 @@ class TodoViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed(),
         initialValue = emptyList()
     )
+
+    init {
+        getAllTasks()
+        readSortState()
+    }
+
     private fun addTask() {
         viewModelScope.launch(Dispatchers.IO) {
             val todoTask = ToDoTask(
@@ -130,7 +135,7 @@ class TodoViewModel @Inject constructor(
         }
     }
 
-    fun getAllTasks() {
+    private fun getAllTasks() {
         _allTasks.value = Result.Loading
         try {
             viewModelScope.launch {
@@ -210,7 +215,7 @@ class TodoViewModel @Inject constructor(
         }
     }
 
-    fun readSortState() {
+    private fun readSortState() {
         _sortState.value = Result.Loading
         try {
             viewModelScope.launch(Dispatchers.IO) {

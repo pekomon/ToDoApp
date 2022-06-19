@@ -21,11 +21,6 @@ fun TodoListView(
     onListItemClicked: ((taskId: Int) -> Unit),
     todoViewModel: TodoViewModel
 ) {
-    LaunchedEffect(key1 = true) {
-        todoViewModel.getAllTasks()
-        todoViewModel.readSortState()
-    }
-
     LaunchedEffect(key1 = action) {
         todoViewModel.handleDatabaseActions(action = action)
     }

@@ -14,8 +14,7 @@ import com.example.pekomon.todoapp.util.Consts.LIST_ARGUMENT_KEY
 import com.example.pekomon.todoapp.util.Consts.LIST_SCREEN
 import com.example.pekomon.todoapp.util.toAction
 
-@OptIn(ExperimentalAnimationApi::class)
-@ExperimentalMaterialApi
+@OptIn(ExperimentalAnimationApi::class, ExperimentalMaterialApi::class)
 fun NavGraphBuilder.listComposable(
     navigateToTaskScreen: ((taskId: Int) -> Unit),
     todoViewModel: TodoViewModel
